@@ -4,11 +4,14 @@ import json
 import requests
 
 # Get User credentials
-un = 'radixus\zachary.burke'
-pw = None
+UN = 'DOMAIN\USERNAME'
+PW = "PASSWORD"
+
+FQDN = "PI_WEB_API_SERVER_FQDN"
+WEBID = "POINT_WEBID"
 
 # Convert user credentials to auth header
-auth_string = '%s:%s' % (un, pw)
+auth_string = '%s:%s' % (UN, PW)
 auth_base64 = base64.b64encode(str.encode(auth_string))
 auth = 'Basic %s' % (auth_base64.decode())
 
@@ -22,12 +25,11 @@ headers = {
 
 value_data = {
         "Value": 991,
-}
+} # Because no time stamp is specified, PI Web API will add value at current time.
 
-### Make request
-#dataserver_webId = 's0o2nFwRTcEk241JW-ymYf2QUkFESVhVU1BJU1JWUg'
+# Make request
 r = requests.post(
-    'https://52.173.141.236/piwebapi/streams/P0o2nFwRTcEk241JW-ymYf2QIyIAAAUkFESVhVU1BJU1JWUlxURVNULldFQkFQSS5aQg/value',
+    f'https://{FQDN}/piwebapi/streams/{WEBID}/value',
     headers=headers,
     data=json.dumps(value_data),
     verify=False

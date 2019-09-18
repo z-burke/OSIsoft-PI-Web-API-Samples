@@ -2,12 +2,16 @@ import base64
 import getpass
 import requests
 
-# Get User credentials
-un = 'radixus\zachary.burke'
-pw = None
+# Get user credentials
+UN = 'DOMAIN\USERNAME'
+PW = "PASSWORD"
+
+# Server info
+FQDN = "PI_WEB_API_SERVER_FQDN"
+WEBID = "POINT_WEBID"
 
 # Convert user credentials to auth header
-auth_string = '%s:%s' % (un, pw)
+auth_string = '%s:%s' % (UN, PW)
 auth_base64 = base64.b64encode(str.encode(auth_string))
 auth = 'Basic %s' % (auth_base64.decode())
 
@@ -17,7 +21,7 @@ headers = {
         }
 
 # Make request
-r = requests.get('https://52.173.141.236/piwebapi/points/P0o2nFwRTcEk241JW-ymYf2QSx0AAAUkFESVhVU1BJU1JWUlwxOUFHMjAwMQ', headers=headers, verify=False)
+r = requests.get(f'https://{FQDN}/piwebapi/points/{WEBID}', headers=headers, verify=False) # Set verify=False to allow bad dev SSL cert.
 
 # If request was successful, convert response to json object.
 if r.status_code == 200:
